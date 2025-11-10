@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Configure the network interface (example: eth0)
+NETWORK_INTERFACE="eth0"
+STATIC_IP="192.168.1.100"
+NETMASK="255.255.255.0"
+GATEWAY="192.168.1.1"
+DNS_SERVER="8.8.8.8"
+
+# Set static IP address
+echo "Configuring static IP address for $NETWORK_INTERFACE..."
+
+sudo nmcli con mod "$NETWORK_INTERFACE" ipv4.addresses "$STATIC_IP/24"
+sudo nmcli con mod "$NETWORK_INTERFACE" ipv4.gateway "$GATEWAY"
+sudo nmcli con mod "$NETWORK_INTERFACE" ipv4.dns "$DNS_SERVER"
+sudo nmcli con mod "$NETWORK_INTERFACE" ipv4.method manual
+
+# Bring the network interface up
+sudo nmcli con up "$NETWORK_INTERFACE"
+
+echo "Network configuration applied: $STATIC_IP"
+
+# Optional: Verify network configuration
+ip a show $NETWORK_INTERFACE
